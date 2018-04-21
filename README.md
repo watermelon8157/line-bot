@@ -29,9 +29,9 @@
   ![](https://i.imgur.com/WJ85jXR.png)
 3. 下載 [範例程式碼](https://github.com/yaoandy107/line-bot-tutorial/archive/master.zip)
 4. 進入 [Line 控制台](https://developers.line.me/console/)，選擇你剛剛創建的機器人
-  ![](https://i.imgur.com/n3bQym2.png)
+  ![] 
 5. 取得 **channel secret** 和 **channel access token**，如果沒有內容，請點 Issue
-  ![](https://i.imgur.com/entIggx.png)
+  ![] 
 6. 使用編輯器開啟範例程式碼資料夾內的 app.py，填入 **channel secret** 和 **channel access token**
   ![](https://i.imgur.com/Uz16joi.png)
 7. 並使用 Heroku CLI 將程式部署到 Heroku 上面 （請參考 [使用 Heroku CLI](#使用-heroku-cli)）
@@ -109,7 +109,7 @@ heroku logs --tail --app {HEROKU_APP_NAME}
 ### app.py
 可透過修改程式裡的 handle_message() 方法內的程式碼來達成不同的回覆效果。
 
-![](https://i.imgur.com/DNeNbpV.png)
+![] 
 
 新版範例程式碼內附註解
 如想更多了解此程式，可以去研究 Python3、[Flask 套件](http://docs.jinkan.org/docs/flask/)、[Line bot sdk](https://github.com/line/line-bot-sdk-python)
