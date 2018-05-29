@@ -1,3 +1,8 @@
+
+# coding: utf-8
+
+# In[ ]:
+
 from flask import Flask, request, abort
 
 from linebot import (
@@ -13,7 +18,10 @@ from linebot.models import (
 app = Flask(__name__)
 
 # Channel Access Token
-line_bot_api = LineBotApi('XHFuFp3irD+5yex6NnFv7OlsTrwnx9F3/CUhvnWmpIuMaF9NGizD1mF9orKnxIrVX5ZofPhMiYL5YPpoWxvLugiLro6R+AqAEXgkQDv/EVu+PwFDZP5HRazhW7TX68nD1X8B9hPgYjHJsyqI+FUorgdB04t89/1O/w1cDnyilFU=')
+def get_Line_token():
+    return 'XHFuFp3irD+5yex6NnFv7OlsTrwnx9F3/CUhvnWmpIuMaF9NGizD1mF9orKnxIrVX5ZofPhMiYL5YPpoWxvLugiLro6R+AqAEXgkQDv/EVu+PwFDZP5HRazhW7TX68nD1X8B9hPgYjHJsyqI+FUorgdB04t89/1O/w1cDnyilFU=';
+line_bot_api = LineBotApi(get_Line_token())
+
 # Channel Secret
 handler = WebhookHandler('6d0e190d410374917e4751e936b302ef')
 
@@ -48,3 +56,4 @@ def handle_message(event):
 import os
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+
