@@ -25,11 +25,12 @@ from linebot.models import *
 app = Flask(__name__)
 
 # Channel Access Token
-# line_bot_api
-line_bot_api = LineBotApi('4XZuwm1PtF5Mo9hsm9pxvVDkzB/3Hpk6guO/yR6t+lh5Bm9MAmc3zaWTZr3+oWfaItY7e2tfPxOAjGxA7MlqGFkfEBSi15Kv5zKESAJqJdMNvP7fZmZUZB53/JqHMM2S13Y/G1epWlwuFd6EYcXb/AdB04t89/1O/w1cDnyilFU=')
-# Channel Secret
-handler = WebhookHandler('3e451da8bec99b211fb6142824891424')
+def get_Line_token():
+    return 'XHFuFp3irD+5yex6NnFv7OlsTrwnx9F3/CUhvnWmpIuMaF9NGizD1mF9orKnxIrVX5ZofPhMiYL5YPpoWxvLugiLro6R+AqAEXgkQDv/EVu+PwFDZP5HRazhW7TX68nD1X8B9hPgYjHJsyqI+FUorgdB04t89/1O/w1cDnyilFU=';
+line_bot_api = LineBotApi(get_Line_token())
 
+# Channel Secret
+handler = WebhookHandler('6d0e190d410374917e4751e936b302ef')
 
 # 監聽所有來自 /callback 的 Post Request
 # @app.route('/') 為網址根目錄，當使用者瀏覽時，就會執行 index() 函式
