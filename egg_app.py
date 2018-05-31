@@ -1,10 +1,9 @@
 #全域參數 常常更新用
 web_url = 'http://wikieggs.ddns.net'; #網站DonamName
-web_image = 'https://image.ibb.co/mXNMiJ/1527430007172.jpg'; #網站用圖片
+web_image = 'https://preview.ibb.co/cVvSdJ/54.jpg'; #網站用圖片
 image_url = web_url + '/Images/EVENT/';
 
-_tempList = []
-
+ 
 import requests
 import re
 import json
@@ -25,12 +24,11 @@ from linebot.models import *
 app = Flask(__name__)
 
 # Channel Access Token
-def get_Line_token():
-    return 'XHFuFp3irD+5yex6NnFv7OlsTrwnx9F3/CUhvnWmpIuMaF9NGizD1mF9orKnxIrVX5ZofPhMiYL5YPpoWxvLugiLro6R+AqAEXgkQDv/EVu+PwFDZP5HRazhW7TX68nD1X8B9hPgYjHJsyqI+FUorgdB04t89/1O/w1cDnyilFU=';
-line_bot_api = LineBotApi(get_Line_token())
-
+# line_bot_api
+line_bot_api = LineBotApi('4XZuwm1PtF5Mo9hsm9pxvVDkzB/3Hpk6guO/yR6t+lh5Bm9MAmc3zaWTZr3+oWfaItY7e2tfPxOAjGxA7MlqGFkfEBSi15Kv5zKESAJqJdMNvP7fZmZUZB53/JqHMM2S13Y/G1epWlwuFd6EYcXb/AdB04t89/1O/w1cDnyilFU=')
 # Channel Secret
-handler = WebhookHandler('6d0e190d410374917e4751e936b302ef')
+handler = WebhookHandler('3e451da8bec99b211fb6142824891424')
+
 
 # 監聽所有來自 /callback 的 Post Request
 # @app.route('/') 為網址根目錄，當使用者瀏覽時，就會執行 index() 函式
@@ -171,20 +169,7 @@ class WIKI_EGG(object):
             self.isThisFun = True;
             _info = json.loads(requests.get(web_url+'/Data/getEvent?LineID='+self.user_id).text)
             app.logger.error("requests json: " + str(_info))
-            self.result = TemplateSendMessage(
-                alt_text='觀看食安快訊',
-                    template=ImageCarouselTemplate(
-                    columns=[
-                        ImageCarouselColumn(
-                            image_url= 'https://i.imgur.com/NNKBnQJ.png', #預設圖案
-                            action = URITemplateAction(
-                                label= '食安新聞',
-                                uri=  i['EVENT_URL'] 
-                            )
-                        ) for i in _info
-                    ]
-                    )
-            )
+            self.result =  TextSendMessage(text = '食安新聞\n' + _info['EVENT_DATE']+ '\n' + _info['EVENT_URL'])
         pass
     
     #危雞百顆
@@ -213,6 +198,7 @@ class WIKI_EGG(object):
     def _test_q_item(self):
          
         if self.msg == self._tList[5][0]:
+            self._test_updateNowAnserList();
             #取得測試區題目選單
             self.result =  TemplateSendMessage(
                     alt_text = self._tList[0][1],
@@ -373,24 +359,31 @@ class WIKI_EGG(object):
     
     #查看測試剩下題目數
     def _test_getNowAnserList(self,pNowRow):
-        if pNowRow not in [ int(i['q']) for i in self._getNowAnserList()]:
-            _tempList.append({'q': str(pNowRow), 'a': self.msg});
-        else:
-            for i in _tempList:
-                if int(i['q']) == pNowRow:
-                    i['a'] = self.msg;
+        self._test_updateNowAnserList()
         self._test_q_item();#檢查剩下幾題
-
+    def _test_updateNowAnserList(self):
+        app.logger.error("requests _test_getNowAnserList json: " + str(json.loads(requests.get(web_url+'/Data/getTestData?LineID='+self.user_id+ '&msg='+self.msg).text)))
+         
     #取得目前題數
     def _getNowAnserList(self):
-        return _tempList;
+        _info = json.loads(requests.get(web_url+'/Data/getTestData?LineID='+self.user_id+ '&msg=getList').text)
+        app.logger.error("requests _getNowAnserList json: " + str(_info))
+        if _info['status'] == 0:
+            return _info['attachment'];
+        else:
+            return [];
+         
     #看雞蛋測驗結果
     def _test_q_result(self):
         if self.msg == self._tList[5][3]:
             #題目選項  
-            self.result =  TextSendMessage(text = "尚未連接WS!無法獲得結果") 
+            _info = json.loads(requests.get(web_url+'/Data/getTestResult?LineID='+self.user_id).text)
+            app.logger.error("requests _test_q_result json: " + str(_info))
+            if _info['status'] == 0:
+                self.result =  TextSendMessage(text = str( _info['attachment']['RESULT_DESC']))
+            else:
+                self.result =  TextSendMessage(text = str( _info['message']))
         pass
-    
  
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
