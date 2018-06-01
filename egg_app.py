@@ -170,7 +170,10 @@ class WIKI_EGG(object):
             self.isThisFun = True;
             _info = json.loads(requests.get(web_url+'/Data/getEvent?LineID='+self.user_id).text)
             app.logger.error("requests json: " + str(_info))
-            self.result =  TextSendMessage(text = '食安新聞\n' + _info['EVENT_DATE']+ '\n' + _info['EVENT_URL'])
+            _textEvent = []
+            for i in _info:
+                _textEvent.append( i['EVENT_DATE']+ '\n' + i['EVENT_URL'])
+            self.result =  TextSendMessage(text = '\n\n'.join(_textEvent))
         pass
     
     #危雞百顆
